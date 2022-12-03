@@ -1,3 +1,6 @@
+#custom
+*.txt
+
 # Logs
 logs
 *.log

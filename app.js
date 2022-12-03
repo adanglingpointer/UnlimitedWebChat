@@ -8,10 +8,13 @@ const session = require('express-session');
 const passport = require("passport");
 const passportLocalMongoose = require("passport-local-mongoose");
 const _ = require("lodash");
+const useragent = require('express-useragent');
 
 const app = express();
 
 app.use(express.static(__dirname + '/public'));
+
+app.use(useragent.express());
 
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
@@ -30,7 +33,8 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-mongoose.connect("mongodb://localhost:27017/slitherTest", {
+
+mongoose.connect("mongodb://localhost:27017/uwschat1", {
   useNewUrlParser: true
 });
 
@@ -242,6 +246,13 @@ app.get("/test", function(req, res) {
 
   // res.render("test");
 
+  if (req.useragent.isMobile){
+    console.log("true, mobile");
+  }else{
+    console.log("false, not mobile 1 isMobile=="+req.useragent.isMobile);
+    res.render("mobile1");
+  }
+
 }); // End of testing area
 
 app.get("/", function(req, res) {
@@ -250,8 +261,16 @@ app.get("/", function(req, res) {
 
 app.get("/login", function(req, res) {
   if (req.isAuthenticated()) {
-    res.redirect("/desktop");
+    if (req.useragent.isMobile==true){
+      console.log("true, mobile");
+      res.redirect("/mobile1");
+    }else{
+      console.log("false, not mobile 2 isMobile=="+req.useragent.isMobile);
+      res.redirect("/desktop");
+    }
+
   } else {
+
     res.render("login");
   }
 });
@@ -266,7 +285,68 @@ app.get("/register", function(req, res) {
 
 app.get("/desktop", function(req, res) {
   if (req.isAuthenticated()) {
-    res.redirect("/rooms/ROOM%201")
+    if (req.useragent.isMobile==true){
+      res.redirect("/mobile1");
+    } else {
+      res.redirect("/rooms/ROOM%201");
+    }
+  } else {
+    res.redirect("/login");
+  }
+});
+
+app.get("/mobile1", function(req, res) {
+  if (req.isAuthenticated()) {
+    if (req.useragent.isMobile==true){
+      Chatroom.find({}, function(err, foundChatrooms) {
+        if (err) {
+          console.log(err);
+        } else {
+          if (foundChatrooms.length == 0) {
+            console.log("we did not find any chatrooms, so we should be creating room 1");
+            Chatroom.findOne({
+              room: 'room 1'
+            }, function(err, foundRoom) {
+              if (!err) {
+                if (!foundRoom) {
+                  const chatroom = new Chatroom({
+                    room: 'room 1',
+                    description: 'The home room chat, where everyone is welcome 😊'
+                  });
+                  chatroom.save();
+                  console.log("chatroom saved");
+                } else {
+                  console.log("room exists: " + foundRoom.room + " : " + foundRoom.description);
+                }
+              }
+            });
+            res.redirect("/rooms/ROOM%201");
+          } else {
+            console.log("apparently, we did find some chatrooms:");
+            console.log(foundChatrooms);
+            Message.find({
+              // room: customChatroom
+            }, function(err, foundMessages) {
+              if (err) {
+                console.log(err);
+              } else {
+                console.log(foundChatrooms);
+              }
+              res.render("mobile1", {
+                foundMessages: foundMessages,
+                foundChatrooms: foundChatrooms,
+                theUser: req.user.username,
+                currentRoom: "ROOM 1"
+              });
+            });
+          }
+        }
+      });
+    } // end of isMobile
+    else {
+      console.log("nope, useragent.isMobile=="+req.useragent.isMobile);
+      res.redirect("/desktop");
+    }
   } else {
     res.redirect("/login");
   }
@@ -309,12 +389,21 @@ app.get("/rooms/:customChat", function(req, res) {
             } else {
               console.log(foundChatrooms);
             }
+            if (req.useragent.isMobile==true){
+              res.render("mobile2", {
+                foundMessages: foundMessages,
+                foundChatrooms: foundChatrooms,
+                theUser: req.user.username,
+                currentRoom: customChatroom
+              });
+            } else {
             res.render("desktop", {
               foundMessages: foundMessages,
               foundChatrooms: foundChatrooms,
               theUser: req.user.username,
               currentRoom: customChatroom
             });
+          }
           });
         }
       }
