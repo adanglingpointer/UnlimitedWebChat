@@ -1,0 +1,26 @@
+<div class="popup-wrapper">
+  <div id="popup-container">
+
+    <div class="modal-content rounded-4 shadow">
+
+      <div class="modal-body p-5 pt-0">
+        <form class="" action="/createChat" method="POST">
+          <div class="form-floating mb-3">
+            <input type="text" class="form-control rounded-3" placeholder="My New Chat" name="newChat" id="newChat">
+            <label for="newChat">Chatroom Name:</label>
+          </div>
+          <div class="form-floating mb-3">
+            <input type="textarea" class="form-control rounded-3" placeholder="A really cool friends for friends." name="chatInfo" id="chatInfo">
+            <label for="chatDesc">Chatroom Description:</label>
+          </div>
+          <button class="w-100 mb-2 btn btn-lg rounded-3 btn-primary" type="submit">Create</button>
+          <hr class="my-4">
+        </form>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <p><a href="javascript:void(0)" onclick="toggle_visibility('room-popup');" style="color:pink;margin:20px;">Close Popup</a></p>
+    </div>
+  </div>
+</div>

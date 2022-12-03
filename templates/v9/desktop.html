@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+
+  <meta charset="utf-8">
+  <title>Slithr</title>
+  <!-- Google Fonts CSS -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;500;700&display=swap" rel="stylesheet">
+
+  <!-- Bootstrap 5.2.1 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+  <!-- JavaScript Bundle with Popper -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
+
+  <!-- Custom CSS Sheet -->
+  <link rel="stylesheet" href="desktop.css">
+
+  <!-- Font Awesome -->
+  <script src="https://kit.fontawesome.com/c2ec60c483.js" crossorigin="anonymous"></script>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+</head>
+
+<body onload="myFunction()">
+
+  <header class="py-3 mb-3 border-bottom">
+      <div class="container-fluid d-grid gap-3 align-items-center" style="grid-template-columns: 1fr 3fr;">
+        <div class="dropdown">
+          <a href="#" class="d-flex align-items-center col-lg-4 mb-2 mb-lg-0 link-dark text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Mozilla_Firefox_logo_2004.svg/1200px-Mozilla_Firefox_logo_2004.svg.png" class="rounded-circle" width="32" height="32">
+          </a>
+          <ul class="dropdown-menu text-small shadow">
+            <li><a class="dropdown-item active" href="#" aria-current="page">Overview</a></li>
+            <li><a class="dropdown-item" href="#">About</a></li>
+            <li><a class="dropdown-item" href="#">Contact</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="#">Source-code</a></li>
+          </ul>
+        </div>
+
+        <div class="d-flex align-items-center">
+
+          <span class="w-100 me-3"><p class="link-align"><a href="#">This be a link</a> - and dis be sum txt</p></span>
+
+          <div class="flex-shrink-0 dropdown">
+            <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+              <img src="https://m.media-amazon.com/images/I/41PnxLrHzEL._AC_SY1000_.jpg" alt="mdo" class="rounded-circle" width="32" height="32">
+            </a>
+            <ul class="dropdown-menu text-small shadow">
+              <li><a class="dropdown-item" href="#">New chatroom...</a></li>
+              <li><a class="dropdown-item" href="#">Settings</a></li>
+              <li><a class="dropdown-item" href="#">Profile</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="#">Sign out</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </header>
+
+<main class="d-flex flex-nowrap">
+
+    <div class="container-fluid pb-3">
+    <div class="d-grid gap-3 grid-cust-ht" style="grid-template-columns: 1fr 3fr;">
+      <div class="bg-light border rounded-3 grid-cust-2 scrollarea2">
+
+        <!-- This is the list of chatrooms -->
+
+        <div class="d-flex flex-column align-items-stretch flex-shrink-0 bg-white">
+            <a href="/" class="d-flex align-items-center flex-shrink-0 p-3 link-dark text-decoration-none border-bottom">
+              <svg class="bi pe-none me-2" width="30" height="24"><use xlink:href="#bootstrap"></use></svg>
+              <span class="fs-5 fw-semibold">List group</span>
+            </a>
+            <div class="list-group list-group-flush border-bottom ">
+              <a href="#" class="list-group-item list-group-item-action active py-3 lh-sm" aria-current="true">
+                <div class="d-flex w-100 align-items-center justify-content-between">
+                  <strong class="mb-1">List group item heading</strong>
+                  <small>Wed</small>
+                </div>
+                <div class="col-10 mb-1 small">Some placeholder content in a paragraph below the heading and date.</div>
+              </a>
+              <a href="#" class="list-group-item list-group-item-action py-3 lh-sm">
+                <div class="d-flex w-100 align-items-center justify-content-between">
+                  <strong class="mb-1">List group item heading</strong>
+                  <small class="text-muted">Tues</small>
+                </div>
+                <div class="col-10 mb-1 small">Some placeholder content in a paragraph below the heading and date.</div>
+              </a>
+              <a href="#" class="list-group-item list-group-item-action py-3 lh-sm">
+                <div class="d-flex w-100 align-items-center justify-content-between">
+                  <strong class="mb-1">List group item heading</strong>
+                  <small class="text-muted">Mon</small>
+                </div>
+                <div class="col-10 mb-1 small">Some placeholder content in a paragraph below the heading and date.</div>
+              </a>
+
+              <a href="#" class="list-group-item list-group-item-action py-3 lh-sm" aria-current="true">
+                <div class="d-flex w-100 align-items-center justify-content-between">
+                  <strong class="mb-1">List group item heading</strong>
+                  <small class="text-muted">Wed</small>
+                </div>
+                <div class="col-10 mb-1 small">Some placeholder content in a paragraph below the heading and date.</div>
+              </a>
+              <a href="#" class="list-group-item list-group-item-action py-3 lh-sm">
+                <div class="d-flex w-100 align-items-center justify-content-between">
+                  <strong class="mb-1">List group item heading</strong>
+                  <small class="text-muted">Tues</small>
+                </div>
+                <div class="col-10 mb-1 small">Some placeholder content in a paragraph below the heading and date.</div>
+              </a>
+              <a href="#" class="list-group-item list-group-item-action py-3 lh-sm">
+                <div class="d-flex w-100 align-items-center justify-content-between">
+                  <strong class="mb-1">List group item heading</strong>
+                  <small class="text-muted">Mon</small>
+                </div>
+                <div class="col-10 mb-1 small">Some placeholder content in a paragraph below the heading and date.</div>
+              </a>
+              <a href="#" class="list-group-item list-group-item-action py-3 lh-sm" aria-current="true">
+                <div class="d-flex w-100 align-items-center justify-content-between">
+                  <strong class="mb-1">List group item heading</strong>
+                  <small class="text-muted">Wed</small>
+                </div>
+                <div class="col-10 mb-1 small">Some placeholder content in a paragraph below the heading and date.</div>
+              </a>
+              <a href="#" class="list-group-item list-group-item-action py-3 lh-sm">
+                <div class="d-flex w-100 align-items-center justify-content-between">
+                  <strong class="mb-1">List group item heading</strong>
+                  <small class="text-muted">Tues</small>
+                </div>
+                <div class="col-10 mb-1 small">Some placeholder content in a paragraph below the heading and date.</div>
+              </a>
+              <a href="#" class="list-group-item list-group-item-action py-3 lh-sm">
+                <div class="d-flex w-100 align-items-center justify-content-between">
+                  <strong class="mb-1">List group item heading</strong>
+                  <small class="text-muted">Mon</small>
+                </div>
+                <div class="col-10 mb-1 small">Some placeholder content in a paragraph below the heading and date.</div>
+              </a>
+              <a href="#" class="list-group-item list-group-item-action py-3 lh-sm" aria-current="true">
+                <div class="d-flex w-100 align-items-center justify-content-between">
+                  <strong class="mb-1">List group item heading</strong>
+                  <small class="text-muted">Wed</small>
+                </div>
+                <div class="col-10 mb-1 small">Some placeholder content in a paragraph below the heading and date.</div>
+              </a>
+              <a href="#" class="list-group-item list-group-item-action py-3 lh-sm">
+                <div class="d-flex w-100 align-items-center justify-content-between">
+                  <strong class="mb-1">List group item heading</strong>
+                  <small class="text-muted">Tues</small>
+                </div>
+                <div class="col-10 mb-1 small">Some placeholder content in a paragraph below the heading and date.</div>
+              </a>
+              <a href="#" class="list-group-item list-group-item-action py-3 lh-sm">
+                <div class="d-flex w-100 align-items-center justify-content-between">
+                  <strong class="mb-1">List group item heading</strong>
+                  <small class="text-muted">Mon</small>
+                </div>
+                <div class="col-10 mb-1 small">Some placeholder content in a paragraph below the heading and date.</div>
+              </a>
+            </div>
+          </div>
+
+      </div>
+
+      <div class="bg-light border rounded-3 grid-cust-2">
+
+<!-- This is where we will keep the chat content -->
+
+<div id="frame">
+  <div class="content">
+
+    <div class="messages">
+      <ul>
+        <li class="sent">
+          <img src="images/dave.jpg" alt=""><span class="usrNme">DHandsumHucks6</span> <span class="msgTme">[11/25/2022 @ 08:02 CET]</span><br>
+          <p class="gimmeabreak">Hey there cutie =]  How are ya?</p>
+        </li>
+        <li class="replies">
+          <img src="images/kat.jpg" alt=""><span class="usrNme2">KitKat1110</span> <span class="msgTme2">[11/25/2022 @ 08:04 CET]&nbsp;</span><br>
+          <p class="gimmeabreak">Hey hunny! Just working, how about you?</p>
+        </li>
+        <li class="replies">
+          <img src="images/sandy.jpg" alt=""><span class="usrNme2">SandyDandy99</span> <span class="msgTme2">[11/25/2022 @ 08:05 CET]&nbsp;</span><br>
+          <p class="gimmeabreak">You guys always forget about me <img src="images/emojii/rolleyes.png" style="width:16px;margin:0 4px;"></p>
+        </li>
+        <li class="sent">
+          <img src="images/dave.jpg" alt=""><span class="usrNme">DHandsumHucks6</span> <span class="msgTme">[11/25/2022 @ 08:10 CET]</span><br>
+          <p class="gimmeabreak">Ohh, hey girly.. we didn't forget about you!  Do you want to go to the park with us this weekend?</p>
+        </li>
+        <li class="replies">
+          <img src="images/sandy.jpg" alt=""><span class="usrNme2">SandyDandy99</span> <span class="msgTme2">[11/25/2022 @ 08:10 CET]&nbsp;</span><br>
+          <p class="gimmeabreak">Woof!!</p>
+        </li>
+        <li class="replies">
+          <img src="images/kat.jpg" alt=""><span class="usrNme2">KitKat1110</span> <span class="msgTme2">[11/25/2022 @ 08:13 CET]&nbsp;</span><br>
+          <p class="gimmeabreak">That sounds like fun!  I'll bring the bubble tea <img src="images/emojii/happy.png" style="width:16px;margin:0 4px;"></p>
+        </li>
+        <li class="sent">
+          <img src="images/dave.jpg" alt=""><span class="usrNme">DHandsumHucks6</span> <span class="msgTme">[11/25/2022 @ 08:14 CET]</span><br>
+            <p class="gimmeabreak">Woohoo!  I'll bring my goofy self.  Love ya, babe!</p>
+        </li>
+        <li class="replies" id="newestreply">
+          <img src="images/kat.jpg" alt=""><span class="usrNme2">KitKat1110</span> <span class="msgTme2">[11/25/2022 @ 08:17 CET]&nbsp;</span><br>
+          <p class="gimmeabreak">Gnagnagnagnagna!</p>
+        </li>
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+      </div>
+    </div>
+
+<input type="text" class="form-control rounded-3" id="floatingInput" placeholder="Type your message here.">
+
+  </div>
+
+</main>
+
+<script>
+function myFunction() {
+  const element = document.getElementById("newestreply");
+  element.scrollIntoView(false);
+}
+</script>
+
+</body>
+  <!-- Footer -->
+
+  <footer id="footer">
+    <i class="social-icon fa-brands fa-square-facebook"></i>
+    <i class="social-icon fa-brands fa-square-twitter"></i>
+    <i class="social-icon fa-brands fa-square-instagram"></i>
+    <i class="social-icon fa-solid fa-square-envelope"></i>
+    <p>© Copyright David Hucks</p>
+  </footer>
+
+
+</html>
