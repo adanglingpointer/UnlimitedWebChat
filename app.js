@@ -34,7 +34,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 
-mongoose.connect("mongodb://localhost:27017/uwschat1", {
+mongoose.connect("mongodb://localhost:27017/uwschat2", {
   useNewUrlParser: true
 });
 

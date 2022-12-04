@@ -27,28 +27,33 @@
 
 <body>
 
+  <!-- POPUP MODAL -->
+  <div class="popup-position" id="room-popup">
+    <%- include('./partials/modal'); %>
+  </div>
+
   <header class="py-1 mb-1 border-bottom">
       <div class="container-fluid d-grid gap-3 align-items-center" style="grid-template-columns: 1fr 1fr;">
         <div class="dropdown">
           <a href="#" class="d-flex align-items-center col-lg-4 mb-2 mb-lg-0 link-dark text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Mozilla_Firefox_logo_2004.svg/1200px-Mozilla_Firefox_logo_2004.svg.png" class="rounded-circle" width="32" height="32">
+            <img src="images/logo.png" class="rounded-circle" width="32" height="32">
           </a>
           <ul class="dropdown-menu text-small shadow">
             <li><a class="dropdown-item active" href="#" aria-current="page">Overview</a></li>
             <li><a class="dropdown-item" href="#">About</a></li>
             <li><a class="dropdown-item" href="#">Contact</a></li>
             <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="#">Source-code</a></li>
+            <li><a class="dropdown-item" href="https://github.com/adanglingpointer/UnlimitedWebChat">Source-code</a></li>
           </ul>
         </div>
 
         <div class="d-flex align-items-center">
 
-          <span class="w-100 me-3"><p class="link-align"><a href="#">This be a link</a> - and dis be sum txt</p></span>
+          <span class="w-100 me-3"><p class="link-align"></p></span>
 
           <div class="flex-shrink-0 dropdown">
             <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-              <img src="https://m.media-amazon.com/images/I/41PnxLrHzEL._AC_SY1000_.jpg" alt="mdo" class="rounded-circle" width="32" height="32">
+              <img src="images/profile.png" alt="mdo" class="rounded-circle" width="32" height="32">
             </a>
             <ul class="dropdown-menu text-small shadow">
               <li><a class="dropdown-item" href="javascript:void(0)" onclick="toggle_visibility('room-popup');">New chatroom...</a></li>
@@ -75,31 +80,15 @@
             <div class="list-group list-group-flush border-bottom ">
 
               <% foundChatrooms.forEach(function(chatroom, index){ %>
-              <%  if (chatroom.room===currentRoom){ %>
-              <a href="/rooms/<%=chatroom.room%>" class="active list-group-item list-group-item-action active py-1 lh-sm">
-                <div class="d-flex w-100 align-items-center justify-content-between">
-                  <strong class="mb-1"> <%=chatroom.room%> </strong>
-                  <small class="text-muted"> </small>
-                </div>
-                <div class="col-10 mb-1 small"> <%=chatroom.description%> </div>
-              </a>
-              <% } else { %>
 
-              <% } %>
-              <% }); %>
-
-              <% foundChatrooms.forEach(function(chatroom, index){ %>
-              <%  if (chatroom.room===currentRoom){ %>
-
-              <% } else { %>
-              <a href="/rooms/<%=chatroom.room%>" class="list-group-item list-group-item-action active py-1 lh-sm">
+              <a href="/rooms/<%=chatroom.room%>" class="list-group-item list-group-item-action py-1 lh-sm">
                 <div class="d-flex w-100 align-items-center justify-content-between">
                   <strong class="mb-1"> <%=chatroom.room%> </strong>
                   <small class="text-muted" </small>
                 </div>
                 <div class="col-10 mb-1 small"> <%=chatroom.description%> </div>
               </a>
-              <% } %>
+
               <% }); %>
 
               <!-- <a href="#" class="list-group-item list-group-item-action py-1 lh-sm">
@@ -115,12 +104,24 @@
 
 </main>
 
+<script src="https://code.jquery.com/jquery-3.6.1.js"></script>
+
+<script>
+function toggle_visibility(id) {
+  var e = document.getElementById(id);
+
+  if (e.style.display == 'block')
+    e.style.display = 'none';
+  else
+    e.style.display = 'block';
+}
+</script>
 
 </body>
   <!-- Footer -->
 
   <footer id="footer">
-    <p>Created by David Hucks</p>
+    <p style="text-align:center;">Created by David Hucks</p>
   </footer>
 
 
