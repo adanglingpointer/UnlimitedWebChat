@@ -24,17 +24,15 @@ app.use(bodyParser.urlencoded({
   extended: true
 }));
 
-app.use(session({
-  secret: process.env.OURLILSECRET,
-  resave: false,
-  saveUninitialized: false
-}));
+const sessionMiddleware = session({ secret: process.env.OURLILSECRET, resave: false, saveUninitialized: false });
+
+app.use(sessionMiddleware);
 
 app.use(passport.initialize());
 app.use(passport.session());
 
 
-mongoose.connect("mongodb://localhost:27017/uwschat2", {
+mongoose.connect("mongodb://localhost:27017/uwschatprod", {
   useNewUrlParser: true
 });
 
@@ -82,6 +80,9 @@ const messageSchema = new mongoose.Schema({
     type: String,
     minlength: 1,
     maxlength: 1396
+  },
+  created: {
+    type: String
   }
 }, {
   timestamps: true
@@ -245,14 +246,6 @@ app.get("/test", function(req, res) {
   //   ///////
 
   // res.render("test");
-
-  if (req.useragent.isMobile){
-    console.log("true, mobile");
-  }else{
-    console.log("false, not mobile 1 isMobile=="+req.useragent.isMobile);
-    res.render("mobile1");
-  }
-
 }); // End of testing area
 
 app.get("/", function(req, res) {
@@ -262,16 +255,12 @@ app.get("/", function(req, res) {
 app.get("/login", function(req, res) {
   if (req.isAuthenticated()) {
     if (req.useragent.isMobile==true){
-      console.log("true, mobile");
       res.redirect("/mobile1");
     }else{
-      console.log("false, not mobile 2 isMobile=="+req.useragent.isMobile);
       res.redirect("/desktop");
     }
-
   } else {
-
-    res.render("login");
+    res.render("login");    // if not authenticated
   }
 });
 
@@ -286,9 +275,9 @@ app.get("/register", function(req, res) {
 app.get("/desktop", function(req, res) {
   if (req.isAuthenticated()) {
     if (req.useragent.isMobile==true){
-      res.redirect("/mobile1");
+      res.redirect("/mobile1");  //  mobile chatroom list route
     } else {
-      res.redirect("/rooms/ROOM%201");
+      res.redirect("/rooms/ROOM%201");  //  default desktop route
     }
   } else {
     res.redirect("/login");
@@ -303,7 +292,7 @@ app.get("/mobile1", function(req, res) {
           console.log(err);
         } else {
           if (foundChatrooms.length == 0) {
-            console.log("we did not find any chatrooms, so we should be creating room 1");
+            console.log("We did not find any chatrooms, so we will create ROOM 1");
             Chatroom.findOne({
               room: 'room 1'
             }, function(err, foundRoom) {
@@ -314,38 +303,33 @@ app.get("/mobile1", function(req, res) {
                     description: 'The home room chat, where everyone is welcome 😊'
                   });
                   chatroom.save();
-                  console.log("chatroom saved");
+                  console.log("Chatroom created");
                 } else {
-                  console.log("room exists: " + foundRoom.room + " : " + foundRoom.description);
+                  console.log("Room already exists: " + foundRoom.room + " : " + foundRoom.description);
                 }
               }
             });
             res.redirect("/rooms/ROOM%201");
           } else {
-            console.log("apparently, we did find some chatrooms:");
-            console.log(foundChatrooms);
-            Message.find({
-              // room: customChatroom
-            }, function(err, foundMessages) {
+            // at least one chatroom already exists in DB
+            Message.find({}, function(err, foundMessages) {
               if (err) {
                 console.log(err);
               } else {
-                console.log(foundChatrooms);
+                res.render("mobile1", {
+                  foundMessages: foundMessages,
+                  foundChatrooms: foundChatrooms,
+                  theUser: req.user.username,
+                  currentRoom: "ROOM 1"
+                });
               }
-              res.render("mobile1", {
-                foundMessages: foundMessages,
-                foundChatrooms: foundChatrooms,
-                theUser: req.user.username,
-                currentRoom: "ROOM 1"
-              });
             });
           }
         }
       });
-    } // end of isMobile
+    } // end of -if client is mobile device-
     else {
-      console.log("nope, useragent.isMobile=="+req.useragent.isMobile);
-      res.redirect("/desktop");
+      res.redirect("/desktop");  // desktop browser
     }
   } else {
     res.redirect("/login");
@@ -360,7 +344,7 @@ app.get("/rooms/:customChat", function(req, res) {
         console.log(err);
       } else {
         if (foundChatrooms.length == 0) {
-          console.log("we did not find any chatrooms, so we should be creating room 1");
+          console.log("We did not find any chatrooms, so we will create ROOM 1");
           Chatroom.findOne({
             room: 'room 1'
           }, function(err, foundRoom) {
@@ -371,39 +355,37 @@ app.get("/rooms/:customChat", function(req, res) {
                   description: 'The home room chat, where everyone is welcome 😊'
                 });
                 chatroom.save();
-                console.log("chatroom saved");
+                console.log("Chatroom created");
               } else {
-                console.log("room exists: " + foundRoom.room + " : " + foundRoom.description);
+                console.log("Room already exists: " + foundRoom.room + " : " + foundRoom.description);
               }
             }
           });
           res.redirect("/rooms/ROOM%201");
         } else {
-          console.log("apparently, we did find some chatrooms:");
-          console.log(foundChatrooms);
+          // at least one chatroom already exists in DB
           Message.find({
             room: customChatroom
           }, function(err, foundMessages) {
             if (err) {
               console.log(err);
             } else {
-              console.log(foundChatrooms);
-            }
-            if (req.useragent.isMobile==true){
-              res.render("mobile2", {
+              if (req.useragent.isMobile==true){
+                res.render("mobile2", {
+                  foundMessages: foundMessages,
+                  foundChatrooms: foundChatrooms,
+                  theUser: req.user.username,
+                  currentRoom: customChatroom
+                });
+              } else {
+              res.render("desktop", {
                 foundMessages: foundMessages,
                 foundChatrooms: foundChatrooms,
                 theUser: req.user.username,
                 currentRoom: customChatroom
               });
-            } else {
-            res.render("desktop", {
-              foundMessages: foundMessages,
-              foundChatrooms: foundChatrooms,
-              theUser: req.user.username,
-              currentRoom: customChatroom
-            });
-          }
+            }
+            }
           });
         }
       }
@@ -452,7 +434,6 @@ app.post('/login', passport.authenticate('local', {
 }));
 
 app.post("/register", function(req, res) {
-
   User.register({
     username: req.body.username
   }, req.body.password, function(err, user) {
@@ -465,15 +446,18 @@ app.post("/register", function(req, res) {
       });
     }
   });
-
 });
 
 app.post("/rooms/:customChat", function(req, res) {
   let customChatroom = _.upperCase(req.params.customChat);
+  let date = new Date().toUTCString();
+  // GMT and UTC are the same, but UTC makes more sense universally
+  date = date.replace("GMT", "UTC");
   let message = new Message({
     username: req.user.username,
     room: customChatroom,
-    contents: req.body.theMessage
+    contents: req.body.theMessage,
+    created: date
   });
 
   let message1 = {
@@ -524,8 +508,8 @@ app.post("/rooms/:customChat", function(req, res) {
 
 app.post("/createChat", function(req, res) {
   let newChatroom = _.upperCase(req.body.newChat);
+  // this filter removes additional spaces before, after, and between the title
   let filterednewChatroom = newChatroom.replace(/\s\s+/g, ' ').trim();
-  console.log(filterednewChatroom);
 
   Chatroom.findOne({
     room: filterednewChatroom
@@ -546,9 +530,48 @@ app.post("/createChat", function(req, res) {
   res.redirect("/rooms/" + filterednewChatroom);
 });
 
-io.on('connection', () => {
-  console.log("a user is connected");
-})
+// convert a connect middleware to a Socket.IO middleware
+const wrap = middleware => (socket, next) => middleware(socket.request, {}, next);
+
+io.use(wrap(sessionMiddleware));
+io.use(wrap(passport.initialize()));
+io.use(wrap(passport.session()));
+
+io.use((socket, next) => {
+  if (socket.request.user) {
+    next();
+  } else {
+    next(new Error('unauthorized'))
+  }
+});
+
+io.on('connection', socket => {
+  socket.on('chatMessage', msg => {
+
+    let date = new Date().toUTCString();
+    // GMT and UTC are the same, but UTC makes more sense universally
+    date = date.replace("GMT", "UTC");
+
+    let message = new Message({
+      username: socket.request.user.username,
+      room: msg.theroom,
+      contents: msg.msg,
+      created: date
+    });
+
+    if (message.contents.trim() != "") {
+      message.save(function(err) {
+        if (err) {
+          console.log(err)
+        } else {
+          console.log("message saved");
+          io.emit('message', message);
+        }
+      });
+    }
+
+  });
+});
 
 var server = http.listen(3000, () => {
   console.log('server is running on port', server.address().port);

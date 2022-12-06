@@ -34,6 +34,7 @@
     <%- include('./partials/modal'); %>
   </div>
 
+  <!-- HEADER content -->
   <header class="border-bottom">
     <div class="container-fluid d-grid gap-3 align-items-center" style="grid-template-columns: 1fr 3fr;">
       <div class="dropdown">
@@ -76,6 +77,7 @@
     </div>
   </header>
 
+  <!-- MAIN content -->
   <main class="d-flex flex-nowrap">
 
     <div class="container-fluid pb-3">
@@ -92,6 +94,9 @@
               <span class="fs-5 fw-semibold">Live Chatrooms</span>
             </a>
             <div class="list-group list-group-flush border-bottom ">
+
+            <% // we append the active room to the list first, as active class, %>
+            <% //  and then append the rest after, so that active is always on top %>
 
               <% foundChatrooms.forEach(function(chatroom, index){ %>
               <%  if (chatroom.room===currentRoom){ %>
@@ -128,7 +133,7 @@
 
         <div class="bg-light border rounded-3 grid-cust-2">
 
-          <!-- This is where we will keep the chat content -->
+          <!-- This is where we keep the active chatroom messages -->
 
           <div id="frame">
             <div class="content">
@@ -136,7 +141,7 @@
               <div class="messages" id="scroller" name="scroller">
                 <ul name="updateme" id="updateme">
                   <% if (foundMessages.length==0){ %>
-                  <%  // if there are no messages in the chat yet, we add this goofy convo as a filler %>
+                    <%  // if there are no messages in the chat yet, we add this goofy convo as a filler %>
                   <li class="sent">
                     <img src="images/dave.jpg" alt=""><span class="usrNme">DHandsumHucks6</span> <span class="msgTme">[11/25/2022 @ 08:02 CET]</span><br>
                     <p class="gimmeabreak">Hey there cutie =] How are ya?</p>
@@ -173,16 +178,16 @@
 
                   <% foundMessages.forEach(function(message, index){ %>
                   <%  if (message.username===theUser){ %>
-                  <% // if the message was sent by the user logged in, display as sent chat bubble %>
-                  <% // if the message is the last, append id to keep focus on load %>
+                    <% // if the message was sent by the user logged in, display as sent chat bubble %>
+                    <% // if the message is the last, append id to keep focus on load %>
                   <% if (index==(foundMessages.length-1)){ %>
                   <li class="sent" id="newestreply">
-                    <img src="images/profile.png" alt=""><span class="usrNme"> <%=message.username%> </span> <span class="msgTme">[<%=message.createdAt%>]</span><br>
+                    <img src="images/profile.png" alt=""><span class="usrNme"> <%=message.username%> </span> <span class="msgTme">[<%=message.created%>]</span><br>
                     <p class="gimmeabreak"> <%=message.contents%> </p>
                   </li>
                   <% } else { %>
                   <li class="sent">
-                    <img src="images/profile.png" alt=""><span class="usrNme"> <%=message.username%> </span> <span class="msgTme">[<%=message.createdAt%>]</span><br>
+                    <img src="images/profile.png" alt=""><span class="usrNme"> <%=message.username%> </span> <span class="msgTme">[<%=message.created%>]</span><br>
                     <p class="gimmeabreak"> <%=message.contents%> </p>
                   </li>
                   <%  } %>
@@ -191,12 +196,12 @@
 
                   <%  if (index==(foundMessages.length-1)){ %>
                   <li class="replies" id="newestreply">
-                    <img src="images/profile.png" alt=""><span class="usrNme2"> <%=message.username%> </span> <span class="msgTme2">[<%=message.createdAt%>]&nbsp;</span><br>
+                    <img src="images/profile.png" alt=""><span class="usrNme2"> <%=message.username%> </span> <span class="msgTme2">[<%=message.created%>]&nbsp;</span><br>
                     <p class="gimmeabreak"> <%=message.contents%> </p>
                   </li>
                   <% } else { %>
                   <li class="replies">
-                    <img src="images/profile.png" alt=""><span class="usrNme2"> <%=message.username%> </span> <span class="msgTme2">[<%=message.createdAt%>]&nbsp;</span><br>
+                    <img src="images/profile.png" alt=""><span class="usrNme2"> <%=message.username%> </span> <span class="msgTme2">[<%=message.created%>]&nbsp;</span><br>
                     <p class="gimmeabreak"> <%=message.contents%> </p>
                   </li>
                   <% } %>
@@ -223,20 +228,23 @@
 
   <script src="https://code.jquery.com/jquery-3.6.1.js"></script>
   <script>
+
     function scrollDown() {
+      // scroll down to the active message on page load
       const element = document.getElementById("newestreply");
       element.scrollIntoView(false);
     }
 
     function toggle_visibility(id) {
+      // used to toggle Create Chatroom Modal
       var e = document.getElementById(id);
-
       if (e.style.display == 'block')
         e.style.display = 'none';
       else
         e.style.display = 'block';
     }
 
+    // code for our websocket
     var socket = io();
     $(() => {
       $("#send").click(() => {
@@ -245,37 +253,55 @@
           message: $("#message").val()
         });
       })
+    });
 
-      // getMessages()
-    })
-
-    socket.on('message', addMessages);
+    socket.on('message', addMessages);  // we read all incoming messages from the server
 
     function addMessages(message) {
-
       let check1 = "<%=currentRoom%>";
       let check2 = message.room;
-
       if (check1 == check2) {
-        console.log("does match");
-        $("#updateme").append(`<li class='replies'><img src='images/profile.png'><span class='usrNme2'>` + message.username + `</span> <span class='msgTme2'>[11/25/2022 @ 08:17 CET]&nbsp;</span><br><p class='gimmeabreak'>` + message.contents +
+        // if the incoming message is for our chatroom
+        if (message.username=="<%=theUser%>"){
+          // if the message comes from the user, it's a sent message class
+          $("#updateme").append(`<li class='sent'><img src='images/profile.png'><span class='usrNme'>` + message.username + `</span> <span class='msgTme'>[`+message.created+`]</span><br><p class='gimmeabreak'>` + message.contents + `</p></li>`);
+        } else {
+          // otherwise, it's a replies message class
+        $("#updateme").append(`<li class='replies'><img src='images/profile.png'><span class='usrNme2'>` + message.username + `</span> <span class='msgTme2'>[`+message.created+`]&nbsp;</span><br><p class='gimmeabreak'>` + message.contents +
           `</p></li>`);
-        //scroll to the bottom of "#myDiv"
+        }
+        // scroll to the bottom of div after adding incoming message
         var myDiv = document.getElementById("updateme");
         myDiv.scrollTop = myDiv.scrollHeight;
-        //For a smooth scroll using jQuery animate
+        // for a smooth scroll using jQuery animate
         $('#updateme').stop().animate({
           scrollTop: $('#updateme')[0].scrollHeight
         }, 800);
       } else {
-        console.log("does not match");
+        // message is not for our current chatroom
       }
-
     }
 
+    // sending chat by websocket
+    document.getElementById("floatingInput")
+        .addEventListener("keydown", function(event) {
+        if (event.keyCode === 13) {    // if client presses Enter key,
+            event.preventDefault();    // we are preventing form submission
+            var sendMessage = {
+              msg : document.getElementById("floatingInput").value,
+              username : "<%=theUser%>",
+              theroom : "<%=currentRoom%>"
+            };
+            socket.emit('chatMessage', sendMessage);
+            document.getElementById("floatingInput").value = "";  // empty out input after message is sent
+        }
+    });
+
+    // in case a client refreshes page, we are preventing a re-POST
     window.onbeforereload = function() {
       return true;
     };
+
   </script>
 
 </body>
