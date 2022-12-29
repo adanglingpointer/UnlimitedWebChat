@@ -13,6 +13,9 @@ The latest version of this app is always live at [https://chat.unlimitedweb.us/]
 
 ## Update Log
 
+- v1.0.4
+- [x] fixed positioning on desktop to make more sense
+
 - v1.0.3
 - [x] configured session-authorized websocket message sending on desktop
 - [x] changed timestamp formatting and updated to UTC

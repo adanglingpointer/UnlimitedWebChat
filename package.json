@@ -1,6 +1,6 @@
 {
   "name": "UnlimitedWebChat",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "A friendly web chat app",
   "main": "app.js",
   "scripts": {
