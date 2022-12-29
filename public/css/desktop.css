@@ -79,6 +79,7 @@ ul {
 
 .grid-cust-2 {
   overflow: hidden;
+  height: 100%;
 }
 
 .messages {
