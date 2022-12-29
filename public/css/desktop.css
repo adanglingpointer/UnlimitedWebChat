@@ -358,3 +358,7 @@ ul {
 .mb-3 {
   margin: 30px;
 }
+
+.dropdown-menu.show {
+  height: fit-content;
+}
